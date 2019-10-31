@@ -4,10 +4,10 @@
     <div class="card">
       <div class="card-body">
         <ul class="list-group">
-          <li class="list-group-item" v-for="item in items" v-bind:key="item">
+          <li class="list-group-item" v-for="item in items" v-bind:key="item.id">
             <div class="row">
               <div class="col-md">
-                {{ item }}
+                {{ item.description }}
               </div>
               <div class="col-md text-right">
                 <button class="btn btn-info" v-on:click="deleteItem(item)"><span class="fa fa-trash"></span></button>
@@ -17,9 +17,9 @@
         </ul>
         <br />
         <div class="input-group">
-          <input v-model="item" type="text" class="form-control" v-on:keyup.enter="additem(item)" placeholder="Digite o item" />
+          <input v-model="description" type="text" class="form-control" v-on:keyup.enter="additem(type, description)" placeholder="Digite o item" />
           <div class="input-group-">
-            <button class="btn btn-info" v-on:click="addItem(item)"><span class="fa fa-plus"></span></button>
+            <button class="btn btn-info" v-on:click="addItem(type, description)"><span class="fa fa-plus"></span></button>
           </div>
         </div>
       </div>
@@ -30,16 +30,19 @@
 <script>
 export default {
 	name: "AppItemList",
-	props: ["title", "items"],
+	props: ["title", "type", "items"],
 	data() {
 		return {
-			item: ""
+			description: ""
 		};
 	},
 	methods: {
-		addItem(item) {
-			this.$emit("addItem", item);
-			this.item = "";
+		addItem(type, description) {
+			this.$emit("addItem", {
+				type,
+				description
+			});
+			this.description = "";
 		},
 		deleteItem (item) {
 			this.$emit("deleteItem", item);
